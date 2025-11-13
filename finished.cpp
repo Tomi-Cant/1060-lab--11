@@ -187,7 +187,6 @@ bool wallIsValid(vector<vector<char>>& mazeMap, int x, int y, bool vertical){
     || y > mazeMap.size()-1|| otherWallY > mazeMap.size()-1){
         return false;
     }
-    char l= mazeMap[y][x];
     if (mazeMap[y][x] != '*' || mazeMap[otherWallY][otherWallX]!= '*'){
         return false;
     }
@@ -292,19 +291,19 @@ bool setupMaze(string wallNum, Maze* maze){
     bool vert;
     string dir;
     while (true) {
-    cout << "Wall " << wallNum << " x coordinate: ";
-    if (cin >> x) break;
-    cout << "Invalid input. Please enter an integer.\n";
-    cin.clear(); 
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-}
-while (true) {
-    cout << "Wall " << wallNum << " y coordinate: ";
-    if (cin >> y) break; 
-    cout << "Invalid input. Please enter an integer.\n";
-    cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+        cout << "Wall " << wallNum << " x coordinate: ";
+        if (cin >> x) break;
+        cout << "Invalid input. Please enter an integer.\n";
+        cin.clear(); 
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    }
+    while (true) {
+        cout << "Wall " << wallNum << " y coordinate: ";
+        if (cin >> y) break; 
+        cout << "Invalid input. Please enter an integer.\n";
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     cout << "Wall "<< wallNum<< " orientation (vertical {v} or horizontal {h}):";
     cin >> dir;
     if (dir == "vertical" || dir== "v"){
@@ -409,7 +408,6 @@ void playMaze(char selectedLevel, bool& setup, Maze* currMaze, Player *player){
         }
         cout << "I want to move... ";
         cin >> moveInput;
-        cout << player->getY() << "   " << player->getX() << endl;
         if (toupper(moveInput.at(0)) == 'Q'){
             break;
         }

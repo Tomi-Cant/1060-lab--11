@@ -256,10 +256,20 @@ bool setupMaze(string wallNum, Maze* maze){
     vector<vector<char>> mazeMap= maze->getMazeState();
     bool vert;
     string dir;
-    cout << "Wall "<< wallNum<< " x coordinate:";
-    cin >> x;
-    cout << "Wall "<< wallNum<< " y coordinate:";
-    cin >> y;
+    while (true) {
+        cout << "Wall " << wallNum << " x coordinate: ";
+        if (cin >> x) break;
+        cout << "Invalid input. Please enter an integer.\n";
+        cin.clear(); 
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    }
+    while (true) {
+        cout << "Wall " << wallNum << " y coordinate: ";
+        if (cin >> y) break; 
+        cout << "Invalid input. Please enter an integer.\n";
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     cout << "Wall "<< wallNum<< " orientation (vertical {v} or horizontal {h}):";
     cin >> dir;
     if (dir == "vertical" || dir== "v"){
@@ -368,7 +378,6 @@ void playMaze(char selectedLevel, bool& setup, Maze* currMaze, Player *player){
         }
         cout << "I want to move... ";
         cin >> moveInput;
-        cout << player->getY() << "   " << player->getX() << endl;
         if (toupper(moveInput.at(0)) == 'Q'){
             break;
         }
