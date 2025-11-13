@@ -1,0 +1,190 @@
+! = important
+! Note starter does not work they must finish part 1 or at least most of it to get it to compile
+Part 1:
+You are looking for completion on:
+    ~Player class minus resetmoves member function 
+    ~a Maze class with a width height and a 2D map vector and a constructor that fills the map vector
+    showMaze:
+       
+        for(vector line : mazeMap){
+                for (char space : line){
+                    cout << space << "  ";
+                }
+                cout << endl;
+            }
+            cout << endl << endl;
+          
+    convertMove:
+
+        for (char& c : move){
+            c=tolower(c);
+        } 
+        return move;
+    
+    ! exactly this in the top of the selectMaze function:
+        Maze maze1(5,5,'*');
+        Maze maze2(2,7,'*');
+        Maze testMaze(2,2,'*');
+    on execution:
+    they press 0 to start and
+      P   *
+      *   *
+        ! the asterisks should match whatever is the last parameter in the maze object initialization
+Part 2:
+    You are looking for 2 functions:  placeWall, wallIsValid
+        placeWall:
+    
+            int otherPos = vertical ? y+1 : x+1; // ternary operator  bool ? if true: if false
+            if (vertical){
+                mazeMap[y][x]= '|';
+                mazeMap[otherPos][x] = '|';   
+            }else{
+                mazeMap[y][x] = '-';
+                mazeMap[y][otherPos] = '-';
+            }
+       
+        
+        ~wallIsValid (may vary):
+       
+            int otherWallX=0;
+            int otherWallY=0;
+            if (vertical){
+                otherWallX=x;
+                otherWallY=y+1;
+            }else{
+                otherWallX=x+1;
+                otherWallY=y;
+            }
+            if (x< 0 || y< 0){
+                return false;
+            }
+            if (x > mazeMap.at(0).size()-1 || otherWallX > mazeMap.at(0).size()-1 
+            || y > mazeMap.size()-1 || otherWallY > mazeMap.size()-1){
+                return false;
+            }
+            if (  mazeMap[y][x] != '*' && mazeMap[otherWallX][otherWallY]!= '*'){
+                return false;
+            }
+            return true;
+        
+        ! look For:
+            - variables for other wall position
+            
+        ~on execute:
+            Students select 1
+            Expected output:
+                            
+                wall validation check 1: 0 
+                wall validation check 2: 0
+                wall validation check 3: 0
+                wall validation check 4: 1
+                wall validation check 5: 0
+                P  |  *  *  *
+                *  |  *  |  *
+                *  *  *  |  *
+                -  -  |  *  *
+                *  *  |  *  * 
+Part 3:
+    ~ You are looking for 4 functions: calcDist, calcMazeStats, mazeEndCheck, resetMoves [in player class]
+        resetMoves:
+            moves.clear()
+
+        calcDist:
+            return sqrt((distX * distX) + (distY * distY));
+            -this requires the cmath library
+
+        calcMazeStats:
+                int deltaX=0;
+                int deltaY=0;
+                for (string move : moves){
+                    if (move == "u"){
+                    deltaY -=1;
+                    } 
+                    if (move == "d"){
+                        deltaY+=1;
+                    } 
+                    if (move == "l"){
+                        deltaX-=1;
+                    }
+                    if (move== "r"){
+                        deltaX+=1;
+                    }
+                }
+                    cout << "Total distance traveled: " << calcDist(deltaX,deltaY) << " Spaces." << endl;
+                    
+                
+                cout << moves.size() << " Moves were made!" << endl;
+            
+            -look for distance tracking in a loop 
+            - a call to calcDist either set to variable or in cout.
+
+        mazeEndCheck:
+            char symbol=player->getPlayerSymbol();
+            if (mazeMap.size()-1 == player ->getY() && mazeMap.at(0).size()-1 == player-> getX()){
+                cout<< endl<< endl;
+                cout << "Maze was completed calculating stats..." << endl;
+            } else{
+                cout << "Maze wasn't completed calculating stats..." << endl;
+            } 
+            calcMazeStats(player->getMoves());
+            cout<< endl<< endl;
+            - they should be checking where the player symbol is and if its at the end 
+            - cout whether or not it was completed
+            - spacing optional
+
+Finished:
+    ~ No new functions to check changes made to existing functions
+        In Player, in move:
+            if (mazeMap[y][x]=='*' && x!= tempX  || y!= tempY || mazeMap[y][x] == 'c' && x!= tempX  || y!= tempY){
+                    moves.push_back(move);
+                    if (mazeMap[y][x] == 'c'){
+                        moves.push_back("c");
+                    }
+                    mazeMap[y][x]=playerSymbol;
+                    mazeMap[tempY][tempX]= '*';
+                }
+            - changes to accommodate new space type 
+            - also tracking in some form such as a push into vector
+        In wallIsValid:
+            if (  mazeMap[y][x] != '*' && mazeMap[otherWallX][otherWallY]!= '*'||
+            mazeMap[y][x] != 'c' && mazeMap[otherWallX][otherWallY]!= 'c'){
+                return false;
+            }
+        - some kind of change to accommodate the new space type
+        In calcMazeStats:
+            if (move== "c"){
+                collectibleFound= true;
+                cout << "Distance traveled to coin: " << calcDist(deltaX,deltaY) << " Spaces." << endl;
+                cout << "The coin was found on move " << count << ".\n";
+                cout << "You moved '" << moves.at(count-1) << "' into the coin." <<endl;
+                deltaX=0;
+                deltaY=0;
+            }
+            if (!collectibleFound){
+                count++;
+            }
+Bonus:
+    ~ look for: resetMaze(), solution to maze 2
+        In resetMaze():
+
+
+
+        !On execution:
+            ! make sure it is not hardcoded
+            
+            *  -  -  *  *  *  *
+            *  *  *  *  -  -  P
+
+
+        Maze was completed calculating stats...
+        Distance traveled to coin: 5 Spaces.
+        The coin was found on move 7.
+        You moved 'r' into the coin.
+        Distance traveled from coin to end: 1.41421 Spaces.
+        10 Moves were made!
+
+        ! dont let them execute the program again the file ask them to select 2 again to show their reset function works.It should look like this only the coin symbol is wherever they had it originally
+
+        P  *  *  *  *  c  *
+        *  *  *  *  *  *  *
+
